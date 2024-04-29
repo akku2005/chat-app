@@ -1,0 +1,30 @@
+.chat-window {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .aside {
+    flex: 0 0 20%; 
+    background-color: #f0f0f0;
+    overflow-y: auto;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 16rem;
+    bottom: 0;
+  }
+  
+  .chat-content {
+    flex: 1; 
+    margin-left: 20%; 
+    overflow-y: auto;
+    padding: 20px;
+  }
+  
+  .chat-input {
+    margin-top: auto; /* Push the input to the bottom */
+    padding: 20px;
+  }
+  
+
+  
