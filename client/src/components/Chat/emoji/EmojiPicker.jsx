@@ -11,7 +11,7 @@ const EmojiPicker = ({ onSelect }) => {
   };
 
   return (
-    <div className="absolute bottom-full left-1 transform -translate-y-1  border rounded-lg shadow-lg p-2  bg-white/20 backdrop-blur-md  border-white/10 text-white ">
+    <div className="absolute bottom-full left-4 mb-2 transform -translate-y-1  border rounded-lg shadow-lg p-2  bg-black text-white ">
       <h2 className="text-center mb-2">Select an emoji:</h2>
       <div className="flex flex-wrap justify-center gap-2">
         {emojis.map((emoji, index) => (

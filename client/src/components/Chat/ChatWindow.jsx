@@ -3,12 +3,18 @@ import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import UserList from "./UserList";
 import SideMenu from "./SideMenu";
+import addContact from "../Common/addContact";
 
 const ChatWindow = () => {
   const [selectedUser, setSelectedUser] = useState(null);
+  const [showAddContact, hideAddContact] = useState(true);
 
   const handleUserClick = (user) => {
     setSelectedUser(user); // Set the selected user when a user is clicked
+  };
+
+  const toggleNewPage = () => {
+    hideAddContact(!showAddContact); // Toggle visibility
   };
 
   return (
@@ -19,26 +25,43 @@ const ChatWindow = () => {
           <div className="bg-gray-300 p-4 flex justify-between items-center">
             <h2 className="text-lg font-semibold">Chat</h2>
             <p className="flex items-end justify-end gap-2 cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                {/* SVG code */}
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                {/* SVG code */}
-              </svg>
+              <ul className="flex gap-2 list-none">
+                <p
+                  className="flex items-end justify-end gap-2 cursor-pointer"
+                  onClick={toggleNewPage}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                    />
+                  </svg>
+                </p>
+                <li>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                    />
+                  </svg>
+                </li>
+              </ul>
             </p>
           </div>
           <div className="p-4 relative">
@@ -54,9 +77,13 @@ const ChatWindow = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none text-gray-400"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 pointer-events-none text-gray-400"
               >
-                {/* SVG path */}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
               </svg>
             </div>
           </div>
@@ -72,12 +99,12 @@ const ChatWindow = () => {
           <div className="flex-1 bg-white p-4 overflow-hidden">
             {/* ChatMessages */}
             <div className="chat-messages text-black">
-              {/* Render ChatMessage components based on selected user */}
-              {selectedUser && <ChatMessage user={selectedUser} />}
+              {/* Pass selected user as prop to ChatMessage */}
+              <ChatMessage selectedUser={selectedUser} />
             </div>
           </div>
           {/* Input */}
-          <div className="bg-gray-200 p-0">
+          <div className="bg-gray-200 p-0 ml-4 mr-4 rounded-lg mt-1 mb-1">
             {/* ChatInput component */}
             <ChatInput />
           </div>
