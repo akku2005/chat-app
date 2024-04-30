@@ -1,4 +1,5 @@
 require("dotenv").config({ path: "./.env" });
+const initializeSocket = require("./socket/socket.js");
 const cors = require("cors");
 const connectDB = require("./db/connectDb");
 const express = require("express");
@@ -6,6 +7,9 @@ const http = require("http");
 const router = require("./routes/index");
 
 const app = express();
+const server = http.createServer(app);
+
+initializeSocket(server);
 
 // Middleware
 app.use(cors());
@@ -27,7 +31,6 @@ app.use("/", router);
 app.use("/login", router);
 
 const PORT = process.env.PORT || 8080;
-const server = http.createServer(app);
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

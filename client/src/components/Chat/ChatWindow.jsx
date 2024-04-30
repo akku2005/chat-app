@@ -3,18 +3,18 @@ import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import UserList from "./UserList";
 import SideMenu from "./SideMenu";
-import addContact from "../Common/addContact";
+import AddContact from "../Common/addContact";
 
 const ChatWindow = () => {
   const [selectedUser, setSelectedUser] = useState(null);
-  const [showAddContact, hideAddContact] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleUserClick = (user) => {
-    setSelectedUser(user); // Set the selected user when a user is clicked
+    setSelectedUser(user);
   };
 
-  const toggleNewPage = () => {
-    hideAddContact(!showAddContact); // Toggle visibility
+  const handlePopupClick = () => {
+    setShowPopup(!showPopup);
   };
 
   return (
@@ -24,45 +24,40 @@ const ChatWindow = () => {
         <div className="bg-gray-200 w-1/5 flex flex-col">
           <div className="bg-gray-300 p-4 flex justify-between items-center">
             <h2 className="text-lg font-semibold">Chat</h2>
-            <p className="flex items-end justify-end gap-2 cursor-pointer">
-              <ul className="flex gap-2 list-none">
-                <p
-                  className="flex items-end justify-end gap-2 cursor-pointer"
-                  onClick={toggleNewPage}
+            <ul className="flex gap-2 list-none cursor-pointer">
+              <li onClick={handlePopupClick}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-5 h-5"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                    />
-                  </svg>
-                </p>
-                <li>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-                    />
-                  </svg>
-                </li>
-              </ul>
-            </p>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                  />
+                </svg>
+              </li>
+              <li>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                  />
+                </svg>
+              </li>
+            </ul>
           </div>
           <div className="p-4 relative">
             <div className="relative">
@@ -89,27 +84,22 @@ const ChatWindow = () => {
           </div>
 
           <div className="flex-1 overflow-y-auto text-center">
-            {/* Render UserList component */}
             <UserList onUserClick={handleUserClick} />
           </div>
         </div>
-        {/* Chat Content */}
         <div className="flex-1 flex flex-col">
-          {/* Messages */}
           <div className="flex-1 bg-white p-4 overflow-hidden">
-            {/* ChatMessages */}
             <div className="chat-messages text-black">
-              {/* Pass selected user as prop to ChatMessage */}
               <ChatMessage selectedUser={selectedUser} />
             </div>
           </div>
-          {/* Input */}
           <div className="bg-gray-200 p-0 ml-4 mr-4 rounded-lg mt-1 mb-1">
-            {/* ChatInput component */}
             <ChatInput />
           </div>
         </div>
       </div>
+      {/* Corrected component name to use uppercase */}
+      {showPopup && <AddContact />}
     </div>
   );
 };

@@ -1,0 +1,12 @@
+@keyframes spin {
+  0% { border-color: #3498db; }
+  25% { border-color: #2ecc71; }
+  50% { border-color: #e74c3c; }
+  75% { border-color: #f39c12; }
+  100% { border-color: #3498db; }
+}
+
+.loader {
+  animation: spin 2s linear infinite;
+}
+  

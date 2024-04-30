@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChatMessage = ({ selectedUser }) => {
+const ChatMessage = ({ selectedUser, message }) => {
   return (
     <div className="">
       {selectedUser && (
@@ -52,7 +52,9 @@ const ChatMessage = ({ selectedUser }) => {
         </div>
       )}
       {selectedUser && (
-        <div className="bg-gray-200 h-screen mt-2 rounded-lg p-5">absolute</div>
+        <div className="bg-gray-200 h-screen mt-2 rounded-lg p-5">
+          {message}
+        </div>
       )}
     </div>
   );
