@@ -1,8 +1,8 @@
 const { connect } = require("mongoose");
-const socketIO = require("socket.io"); // Corrected import statement
+const socketIO = require("socket.io");
 
 function initializeSocket(server) {
-  const io = socketIO(server); // Corrected variable name
+  const io = socketIO(server);
 
   io.on("connection", (socket) => {
     console.log("A user connected");

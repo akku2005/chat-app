@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import EmojiPicker from "./emoji/EmojiPicker"; // Assuming you have an EmojiPicker component for selecting emojis
+import EmojiPicker from "./emoji/EmojiPicker";
 
 const ChatInput = () => {
   const [message, setMessage] = useState("");
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false); // State to manage the visibility of the EmojiPicker
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -13,6 +13,12 @@ const ChatInput = () => {
     // Handle sending message
     console.log("Message sent:", message);
     setMessage("");
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSend();
+    }
   };
 
   return (
@@ -61,6 +67,7 @@ const ChatInput = () => {
         placeholder="Type a message"
         value={message}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         className="flex-grow outline-none px-3 py-2 bg-transparent border rounded-xl focus:ring-0 text-black border-indigo-500"
       />
 
