@@ -71,7 +71,7 @@ const sendMail = async (email, verificationCode) => {
     console.log("Verification code email sent successfully.");
   } catch (error) {
     console.error("Error sending verification code email:", error);
-    throw error; // Re-throw the error to handle it in the caller function
+    throw error;
   }
 };
 

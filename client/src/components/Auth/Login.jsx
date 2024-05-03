@@ -14,10 +14,10 @@ const Login = () => {
     try {
       // Check if entered email and password match the default ones
       if (email === "akash@gmail.com" && password === "password") {
-        // Simulate successful login
+        // successful login
         window.location.href = "/chat-window";
       } else {
-        // Send a POST request to your backend server for user authentication
+        // Send a POST request to backend server for user authentication
         const response = await axios.post("http://localhost:6060/login", {
           email,
           password,

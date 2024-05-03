@@ -1,4 +1,3 @@
-// model/register.js
 const mongoose = require("mongoose");
 
 const RegisterUserSchema = new mongoose.Schema(
@@ -16,6 +15,10 @@ const RegisterUserSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 8,
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false, // Assuming initially emails are not verified
     },
   },
   {
