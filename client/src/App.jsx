@@ -7,6 +7,9 @@ const Signup = React.lazy(() => import("./components/Auth/Signup"));
 const ForgotPassword = React.lazy(() =>
   import("./components/Auth/ForgotPassword")
 );
+const PageNotFound = React.lazy(() =>
+  import("./components/PageNotFound/PageNotFound")
+);
 const Chatwindow = React.lazy(() => import("./components/Chat/ChatWindow"));
 
 const App = () => {
@@ -45,7 +48,6 @@ const App = () => {
           element={
             <Suspense fallback={<LoadingSpinner />}>
               {" "}
-              {/* Use LoadingSpinner as the fallback */}
               <ForgotPassword />
             </Suspense>
           }
@@ -55,8 +57,16 @@ const App = () => {
           element={
             <Suspense fallback={<LoadingSpinner />}>
               {" "}
-              {/* Use LoadingSpinner as the fallback */}
               <Chatwindow />
+            </Suspense>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<LoadingSpinner />}>
+              {" "}
+              <PageNotFound />
             </Suspense>
           }
         />
