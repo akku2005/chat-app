@@ -12,7 +12,6 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-const Login = mongoose.model("Login", UserSchema); // Change the model name to Login
+const User = mongoose.model("User", UserSchema);
 
-// Export the Login model
-module.exports = Login;
+module.exports = User;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import bg from "../../assets/RegisterImg.png";
-import { FiBell, FiMoon, FiGlobe } from "react-icons/fi"; // Import icons from react-icons library
+import { FiBell, FiMoon, FiGlobe } from "react-icons/fi";
 
 const SettingsPopup = () => {
   const [popupOpen, setPopupOpen] = useState(true);

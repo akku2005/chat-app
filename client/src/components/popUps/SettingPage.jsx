@@ -6,6 +6,7 @@ const SettingPage = () => {
   const [avatar, setAvatar] = useState(bg);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [popupOpen, setPopupOpen] = useState(true);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const user = {
     avatar: avatar,
@@ -25,27 +26,38 @@ const SettingPage = () => {
 
   const handleAvatarChange = (imageUrl) => {
     setAvatar(imageUrl);
-    setGalleryOpen(false); // Close the gallery modal after selecting an image
+    setGalleryOpen(false);
   };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file);
+    setSelectedFile(file);
     setAvatar(imageUrl);
-    setGalleryOpen(false);
+    setGalleryOpen(true);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Add logic to update user settings (e.g., send API request)
-    if (name.length && avatar.length > 0) {
+    if (name.length && selectedFile) {
+      // Check if name and file are selected
       console.log("Name:", name);
       console.log("Avatar:", avatar);
+      // Add logic to save the user profile (e.g., send API request)
+    } else {
+      // Handle error or notify the user
+      console.log("Please provide a name and select an image.");
     }
   };
 
   const closePopup = () => {
     setPopupOpen(false);
+  };
+
+  const cancelImageSelection = () => {
+    setSelectedFile(null);
+    setGalleryOpen(false);
+    setAvatar(user.avatar);
   };
 
   return (
@@ -60,21 +72,34 @@ const SettingPage = () => {
           />
 
           {galleryOpen && (
-            <div className="gallery-modal fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+            <div className="gallery-modal fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70">
               <div className="gallery-content bg-white p-4 rounded-md">
                 <h2 className="text-lg font-semibold mb-2">Select Avatar</h2>
+                <img
+                  src={avatar}
+                  alt="Preview"
+                  className="mb-4 max-h-60 ml-7 "
+                />
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
-                  className="mb-4"
+                  className="mb-8 mt-2 items-center"
                 />
-                <button
-                  onClick={() => setGalleryOpen(false)}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mt-4"
-                >
-                  Close
-                </button>
+                <div className="flex justify-center">
+                  <button
+                    onClick={cancelImageSelection}
+                    className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-4"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => setGalleryOpen(false)}
+                    className="bg-gray-500 hover:bg-zinc-600 text-white font-bold py-2 px-4 rounded "
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -113,7 +138,7 @@ const SettingPage = () => {
                   readOnly
                 />
               </div>
-              <div className="flex items-center  justify-center">
+              <div className="flex items-center justify-center">
                 <button
                   type="submit"
                   className="p-1 mt-2 font-bold bg-slate-400 px-12 rounded-md hover:bg-zinc-600"
