@@ -5,6 +5,7 @@ const connectDB = require("./db/connectDb");
 const express = require("express");
 const http = require("http");
 const router = require("./routes/index");
+const UserList = require("./routes/userList.js");
 
 const app = express();
 const server = http.createServer(app);
@@ -30,6 +31,8 @@ connectDB()
 // Routes
 app.use("/", router);
 app.use("/login", router);
+
+app.get("/users", UserList);
 
 const PORT = process.env.PORT || 8080;
 

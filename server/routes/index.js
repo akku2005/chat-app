@@ -10,10 +10,10 @@ const sendMail = require("../services/email.service");
 // Login route
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body; // Extract email and password from the request body
+    const { email, password, socketId } = req.body; // Extract email, password, and socketId from the request body
 
     // Find the user by email
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
@@ -22,6 +22,17 @@ router.post("/login", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Check if the user has a socketId assigned
+    if (!user.socketId) {
+      // If socketId is not assigned, assign it and save it to MongoDB
+      user.socketId = socketId;
+      await user.save();
+    } else if (user.socketId !== socketId) {
+      // If the user's socketId is different from the current socketId, update it
+      user.socketId = socketId;
+      await user.save();
     }
 
     // Log the login

@@ -18,7 +18,7 @@ const RegisterUserSchema = new mongoose.Schema(
     },
     isEmailVerified: {
       type: Boolean,
-      default: false, // Assuming initially emails are not verified
+      default: false,
     },
   },
   {

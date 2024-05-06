@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
-import userData from "../../assets/userList.json";
+import axios from "axios";
 
 const UserList = ({ onUserClick }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    setUsers(userData);
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:6060/users");
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
   }, []);
 
   const handleClick = (user) => {
@@ -17,17 +25,17 @@ const UserList = ({ onUserClick }) => {
       {users.map((user, index) => (
         <div
           key={index}
-          className="user-card bg-white rounded-lg p-3 mb-2 flex items-center w-full cursor-pointer"
+          className="user-card bg-white rounded-lg p-3 mb-2 flex items-center w-full cursor-pointer hover:bg-gray-100"
           onClick={() => handleClick(user)}
         >
           <img
             src={user.avatar}
-            alt={user.name}
+            alt={user.userName}
             className="w-12 h-12 rounded-full mr-4"
           />
           <div>
-            <p className="text-xl font-semibold">{user.name}</p>
-            <p className="text-gray-500">{user.email}</p>
+            <p className="text-xl font-semibold">{user.userName}</p>
+            <p className="text-gray-200  bg-gray-500 text-sm ">{user.email}</p>
           </div>
         </div>
       ))}
