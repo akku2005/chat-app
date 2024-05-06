@@ -64,6 +64,7 @@
 import React, { useState } from "react";
 import ChatInput from "./ChatInput";
 import { icons } from "../Common/icons";
+import defaultImage from "../../assets/9440461.jpg";
 
 const ChatMessage = ({ selectedUser }) => {
   const [messages, setMessages] = useState([]);
@@ -83,7 +84,7 @@ const ChatMessage = ({ selectedUser }) => {
             <div className="flex items-center gap-3">
               <img
                 className="w-12 h-12 rounded-full"
-                src={selectedUser.avatar}
+                src={selectedUser.avatar || defaultImage}
                 alt={selectedUser.name}
               />
               <p>{selectedUser.name}</p>

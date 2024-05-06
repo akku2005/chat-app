@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import defaultImage from "../../assets/9440461.jpg";
 
 const UserList = ({ onUserClick }) => {
   const [users, setUsers] = useState([]);
@@ -29,13 +30,14 @@ const UserList = ({ onUserClick }) => {
           onClick={() => handleClick(user)}
         >
           <img
-            src={user.avatar}
+            src={user.avatar || defaultImage} // Use user's avatar if available, otherwise use default image
             alt={user.userName}
             className="w-12 h-12 rounded-full mr-4"
           />
           <div>
             <p className="text-xl font-semibold">{user.userName}</p>
-            <p className="text-gray-200  bg-gray-500 text-sm ">{user.email}</p>
+            {/* <p className="text-gray-500 text-sm">{user.email}</p> */}
+            <p className="text-gray-500 text-sm">{user.img}</p>
           </div>
         </div>
       ))}
