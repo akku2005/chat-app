@@ -61,7 +61,6 @@
 // // };
 
 // // export default ChatMessage;
-
 import React, { useState } from "react";
 import ChatInput from "./ChatInput";
 import { icons } from "../Common/icons";
@@ -75,6 +74,7 @@ const ChatMessage = ({ selectedUser }) => {
   const handleSendMessage = (message) => {
     const timestamp = new Date().toLocaleTimeString();
     setMessages([...messages, { message, timestamp }]);
+    console.log(message);
   };
 
   return (
@@ -88,7 +88,8 @@ const ChatMessage = ({ selectedUser }) => {
                 src={selectedUser.avatar || defaultImage}
                 alt={selectedUser.name}
               />
-              <p>{selectedUser.name}</p>
+              <p>{selectedUser.userName}</p>{" "}
+              {/* Changed to selectedUser.userName */}
             </div>
             <ul className="flex gap-3 p-2 justify-between">
               <li className="bg-slate-400 rounded-xl p-2 hover:bg-slate-500 hover:text-green-400 cursor-pointer">
@@ -110,7 +111,7 @@ const ChatMessage = ({ selectedUser }) => {
               </div>
             ))}
           </div>
-          <div className="mb-6">
+          <div className="mb-5">
             <ChatInput
               handleMessageChange={handleMessageChange}
               handleSendMessage={handleSendMessage}

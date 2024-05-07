@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import bg from "../../assets/RegisterImg.png";
+import bg from "../../assets/profile.png";
 import { FiBell, FiMoon, FiGlobe } from "react-icons/fi";
 
 const SettingsPopup = () => {
