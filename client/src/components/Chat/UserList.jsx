@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import defaultImage from "../../assets/9440461.jpg";
+import defaultImage from "../../assets/9440461.jpg"; // Import the image
 
 const UserList = ({ onUserClick }) => {
   const [users, setUsers] = useState([]);
@@ -30,7 +30,7 @@ const UserList = ({ onUserClick }) => {
           onClick={() => handleClick(user)}
         >
           <img
-            src={user.avatar || defaultImage} // Use user's avatar if available, otherwise use default image
+            src={user.avatar || defaultImage}
             alt={user.userName}
             className="w-12 h-12 rounded-full mr-4"
           />

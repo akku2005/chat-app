@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { icons } from "../Common/icons";
-import SettingsPage from "../popUps/SettingPage"; // Import the correct settings page component
-import UserProfilePopup from "../popUps/UserProfile"; // Import your user profile popup component
+import SettingsPage from "../popUps/SettingPage";
+import UserProfilePopup from "../popUps/UserProfile";
+import defaultAvatar from "../../assets/profile.png";
 
 const SideMenu = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isUserProfileOpen, setIsUserProfileOpen] = useState(false); // State for user profile popup
+  const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
+  const [userProfileImage, setUserProfileImage] = useState(null);
   const settingsRef = useRef(null);
-  const userProfileRef = useRef(null); // Ref for user profile popup container
+  const userProfileRef = useRef(null);
 
   const handleSettingsClick = () => {
     setIsSettingsOpen(!isSettingsOpen);
@@ -25,7 +27,7 @@ const SideMenu = () => {
       !userProfileRef.current.contains(event.target)
     ) {
       setIsSettingsOpen(false);
-      setIsUserProfileOpen(false); // Close both popups if clicked outside
+      setIsUserProfileOpen(false);
     }
   };
 
@@ -35,6 +37,10 @@ const SideMenu = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleSetProfileImage = (image) => {
+    setUserProfileImage(image);
+  };
 
   return (
     <div className="bg-zinc-800 flex flex-col justify-between h-full ">
@@ -67,9 +73,22 @@ const SideMenu = () => {
           </li>
           <li
             className="hover:text-pink-500 cursor-pointer"
-            onClick={handleUserProfileClick} // Handle click for user profile popup
+            onClick={handleUserProfileClick}
           >
-            {icons.find((icon) => icon.id === 12)?.icon}
+            {icons.find((icon) => icon.id === 12)?.icon instanceof Function ? (
+              icons
+                .find((icon) => icon.id === 12)
+                ?.icon({
+                  userProfileImage,
+                  handleSetProfileImage,
+                })
+            ) : (
+              <img
+                src={defaultAvatar}
+                alt="Default Avatar"
+                className="w-6 h-6 rounded-full"
+              />
+            )}
           </li>
         </ul>
       </div>
