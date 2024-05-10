@@ -168,7 +168,7 @@ import bg from "../../assets/RegisterImg.png";
 
 const SettingPage = ({ userProfileImage }) => {
   const [name, setName] = useState("");
-  const [avatar, setAvatar] = useState(userProfileImage || bg); // Set initial value to userProfileImage if available, otherwise use bg
+  const [avatar, setAvatar] = useState(userProfileImage || bg);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [popupOpen, setPopupOpen] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);

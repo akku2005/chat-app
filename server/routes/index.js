@@ -64,11 +64,6 @@ router.post("/forgot-password", async (req, res) => {
       verificationCode: verificationCode.toString(),
     });
     await forgotPasswordEntry.save();
-
-    // Send verification email
-    await sendMail(email, verificationCode);
-
-    res.status(200).json({ message: "Verification code sent successfully." });
   } catch (error) {
     console.error("Error sending verification code:", error);
     res.status(500).json({ error: "Internal server error" });
