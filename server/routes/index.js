@@ -1,19 +1,20 @@
-// routes/auth.js
 const express = require("express");
 const bcrypt = require("bcrypt");
-const router = express.Router();
-const Login = require("../model/login");
+const jwt = require("jsonwebtoken");
 const User = require("../model/register");
+const Login = require("../model/login");
 const ForgotPassword = require("../model/forgotPassword");
 const sendMail = require("../services/email.service");
+
+const router = express.Router();
 
 // Login route
 router.post("/login", async (req, res) => {
   try {
-    const { email, password, socketId } = req.body; // Extract email, password, and socketId from the request body
+    const { email, password, socketId } = req.body;
 
     // Find the user by email
-    let user = await User.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
@@ -24,30 +25,40 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Check if the user has a socketId assigned
-    if (!user.socketId) {
-      // If socketId is not assigned, assign it and save it to MongoDB
-      user.socketId = socketId;
-      await user.save();
-    } else if (user.socketId !== socketId) {
-      // If the user's socketId is different from the current socketId, update it
+    // Assign or update socketId
+    if (!user.socketId || user.socketId !== socketId) {
       user.socketId = socketId;
       await user.save();
     }
 
+    // Generate access token
+    const accessToken = jwt.sign(
+      { userId: user._id },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+    );
+
+    // Generate refresh token
+    const refreshToken = jwt.sign(
+      { userId: user._id },
+      process.env.REFRESH_TOKEN_SECRET
+    );
+
     // Log the login
-    const loginRecord = new Login({
-      email: user.email,
-    });
+    const loginRecord = new Login({ email: user.email });
     await loginRecord.save();
 
-    res.status(200).json({ message: "Login successful", user });
+    // Send the tokens along with the response
+    res
+      .status(200)
+      .json({ message: "Login successful", accessToken, refreshToken });
   } catch (error) {
     console.error("Error logging in:", error.message);
     res.status(500).json({ message: "Server Error" });
   }
 });
 
+// Forgot password route
 router.post("/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
@@ -57,13 +68,22 @@ router.post("/forgot-password", async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const verificationCode = Math.floor(100000 + Math.random() * 900000);
+
+    // Generate a verification code
+    const verificationCode = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
 
     const forgotPasswordEntry = new ForgotPassword({
       email,
-      verificationCode: verificationCode.toString(),
+      verificationCode,
     });
     await forgotPasswordEntry.save();
+
+    // Send email with verification code
+    await sendMail(email, verificationCode);
+
+    res.status(200).json({ message: "Verification code sent successfully" });
   } catch (error) {
     console.error("Error sending verification code:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -84,16 +104,21 @@ router.post("/register", async (req, res) => {
     // Generate a verification code
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ userName, email, password: hashedPassword });
-
-    newUser.verificationCode = verificationCode;
+    // Create a new user
+    const newUser = new User({
+      userName,
+      email,
+      password: hashedPassword,
+      verificationCode,
+    });
     await newUser.save();
 
+    // Send verification email
     await sendMail(email, verificationCode);
 
-    // Respond with success message
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     console.error("Error registering user:", error);
@@ -104,7 +129,17 @@ router.post("/register", async (req, res) => {
 // Verify code route
 router.post("/verify-code", async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, verificationCode } = req.body;
+
+    // Find the verification entry
+    const forgotPasswordEntry = await ForgotPassword.findOne({
+      email,
+      verificationCode,
+    });
+    if (!forgotPasswordEntry) {
+      return res.status(400).json({ message: "Invalid verification code" });
+    }
+
     res.status(200).json({ message: "Verification code is valid" });
   } catch (error) {
     console.error("Error verifying code:", error);

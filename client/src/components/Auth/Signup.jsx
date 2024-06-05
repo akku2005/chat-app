@@ -12,33 +12,36 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // Check if password meets length requirement
-      if (password.length < 8) {
-        setError("Password must be at least 8 characters long");
-        return;
-      }
+    setError("");
+    setSuccess("");
 
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+
+    try {
       const response = await axios.post("http://localhost:6060/register", {
         userName,
         email,
         password,
       });
 
-      // Check if the response status is OK (status code 200-299)
-      if (response.status >= 200 && response.status < 300) {
-        setError(""); // Clear any previous error messages
+      if (response.status === 201) {
         setSuccess(
           "Registration successful. You will be redirected to the login page."
         );
         setTimeout(() => {
           window.location.href = "/login";
-        }, 2000); // Redirect after 2 seconds
+        }, 2000);
       } else {
-        throw new Error("Registration failed");
+        setError(response.data.message || "Registration failed");
       }
     } catch (error) {
-      setError("Registration failed. Please try again later.");
+      setError(
+        error.response?.data?.message ||
+          "Registration failed. Please try again later."
+      );
     }
   };
 

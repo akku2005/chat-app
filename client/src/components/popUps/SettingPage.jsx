@@ -163,6 +163,7 @@
 // export default SettingPage;
 
 // SettingPage.js
+
 import { useState } from "react";
 import bg from "../../assets/RegisterImg.png";
 
@@ -187,11 +188,6 @@ const SettingPage = ({ userProfileImage }) => {
 
   const handleNameChange = (event) => {
     setName(event.target.value);
-  };
-
-  const handleAvatarChange = (imageUrl) => {
-    setAvatar(imageUrl);
-    setGalleryOpen(false);
   };
 
   const handleFileChange = (event) => {
@@ -232,7 +228,7 @@ const SettingPage = ({ userProfileImage }) => {
         <div className="settings-popup p-3 bg-gray-500 shadow-lg rounded-md absolute right-0 top-0 h-full w-64 z-50 justify-center items-center text-center">
           <img
             className="w-18 h-18 rounded-full border-4 border-pink-600 cursor-pointer"
-            src={user.avatar}
+            src={user.avatar || bg}
             alt={user.name}
             onClick={() => setGalleryOpen(true)}
           />

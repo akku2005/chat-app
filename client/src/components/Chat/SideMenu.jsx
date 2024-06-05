@@ -110,6 +110,7 @@
 // export default SideMenu;
 
 // SideMenu.js
+
 import React, { useEffect, useState, useRef } from "react";
 import { icons } from "../Common/icons";
 import SettingsPage from "../popUps/SettingPage";

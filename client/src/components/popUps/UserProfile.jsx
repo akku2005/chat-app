@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import bg from "../../assets/profile.png";
 import { FiBell, FiMoon, FiGlobe } from "react-icons/fi";
 
 const SettingsPopup = () => {
   const [popupOpen, setPopupOpen] = useState(true);
+  const [socketId, setSocketId] = useState("");
+
   const user = {
     avatar: bg,
-    name: "John Doe",
-    username: "johndoe123",
-    email: "john@example.com",
+    name: "Akash",
+    username: "example1234",
+    email: "akash@example.com",
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     settings: {
       notifications: true,
@@ -16,8 +18,19 @@ const SettingsPopup = () => {
       language: "English",
     },
   };
+
+  useEffect(() => {
+    const storedSocketId = window.sessionStorage.getItem("socketId");
+    setSocketId(storedSocketId);
+  }, []);
+
   const closePopup = () => {
     setPopupOpen(false);
+  };
+
+  const handleLogout = () => {
+    window.sessionStorage.clear(); // Clear session storage
+    window.location.href = "/login"; // Redirect to login page
   };
 
   return (
@@ -34,8 +47,10 @@ const SettingsPopup = () => {
             <p className="text-gray-700">@{user.username}</p>
             <p className="text-sm text-gray-700 mt-2">Email: {user.email}</p>
             <p className="text-sm text-gray-700 mt-2">{user.bio}</p>
+            {/* Display Socket ID */}
+            <p className="text-sm text-gray-700 mt-2">Socket ID: {socketId}</p>
             {/* User Settings */}
-            <div className="mt-4">
+            <div className="mt-4 ml-8">
               <h3 className="text-lg font-semibold">Settings</h3>
               <div className="flex items-center mt-2 font-semibold">
                 <FiBell className="mr-2 text-gray-600" />
@@ -60,9 +75,15 @@ const SettingsPopup = () => {
           </div>
           <button
             onClick={closePopup}
-            className="bg-zinc-400 hover:bg-zinc-700 text-black font-bold py-1 px-12 mt-8 rounded focus:outline-none focus:shadow-outline"
+            className="bg-zinc-400 hover:bg-zinc-700 text-black font-bold py-1 px-12 mt-8 rounded focus:outline-none focus:shadow-outline w-40"
           >
             Close
+          </button>
+          <button
+            onClick={handleLogout}
+            className="bg-zinc-400 hover:bg-red-500 text-black font-bold py-1 px-12 mt-2 rounded focus:outline-none focus:shadow-outline w-40"
+          >
+            Logout
           </button>
         </div>
       )}
