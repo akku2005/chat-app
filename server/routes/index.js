@@ -95,16 +95,14 @@ router.post("/register", async (req, res) => {
   try {
     const { userName, email, password } = req.body;
 
-    // Check if the user already exists
+    // Check if the user already
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Generate a verification code
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
@@ -126,12 +124,11 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Verify code route
+// Verify route
 router.post("/verify-code", async (req, res) => {
   try {
     const { email, verificationCode } = req.body;
 
-    // Find the verification entry
     const forgotPasswordEntry = await ForgotPassword.findOne({
       email,
       verificationCode,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import RegisterImg from "../../assets/RegisterImg.png";
+import { icons } from "../Common/icons";
 
 const Signup = () => {
   const [userName, setUserName] = useState("");
@@ -9,6 +10,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,7 +115,8 @@ const Signup = () => {
                 >
                   Password
                 </label>
-                <div className="flex">
+
+                <div className="flex relative">
                   <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
                     <i className="mdi mdi-lock-outline text-gray-400 text-lg"></i>
                   </div>
@@ -126,6 +129,17 @@ const Signup = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
+                  <div className="absolute ml-2 mb-3 inset-y-0 right-0 pr-3 flex items-center">
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="focus:outline-none mt-4"
+                    >
+                      {showPassword
+                        ? icons.find((icon) => icon.id === 13)?.icon
+                        : icons.find((icon) => icon.id === 14)?.icon}
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className="mb-5">

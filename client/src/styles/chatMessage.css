@@ -1,0 +1,24 @@
+.message {
+    display: flex;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .message.outgoing {
+    justify-content: flex-end;
+    background-color: #d1e7dd; /* Light green for outgoing messages */
+  }
+  
+  .message.incoming {
+    justify-content: flex-start;
+    background-color: #f8d7da; /* Light red for incoming messages */
+  }
+  
+  .message-content {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 8px;
+    word-wrap: break-word;
+  }
+  

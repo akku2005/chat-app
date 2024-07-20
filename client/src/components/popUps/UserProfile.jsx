@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import bg from "../../assets/profile.png";
 import { FiBell, FiMoon, FiGlobe } from "react-icons/fi";
 
@@ -15,7 +15,7 @@ const SettingsPopup = () => {
     settings: {
       notifications: true,
       darkMode: false,
-      language: "English",
+      language: ["English " /** Add multiple languages as per your choice */],
     },
   };
 
@@ -30,6 +30,7 @@ const SettingsPopup = () => {
 
   const handleLogout = () => {
     window.sessionStorage.clear(); // Clear session storage
+    window.localStorage.clear(); // Clear local storage also
     window.location.href = "/login"; // Redirect to login page
   };
 
