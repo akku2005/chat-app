@@ -55,6 +55,7 @@ import io from "socket.io-client";
 const UserList = ({ onUserClick, loggedInUserEmail }) => {
   const [users, setUsers] = useState([]);
   const [socket, setSocket] = useState(null);
+  const [onlineStatus, setOnlineStatus] = useState({});
 
   useEffect(() => {
     // Establish Socket.IO connection
@@ -73,9 +74,13 @@ const UserList = ({ onUserClick, loggedInUserEmail }) => {
     };
     fetchUsers();
 
-    // Listen for incoming messages
-    socketConnection.on("message", (message) => {
-      console.log("New message received:", message);
+    // Listen for user status updates
+    socketConnection.on("userOnline", (email) => {
+      setOnlineStatus((prevStatus) => ({ ...prevStatus, [email]: true }));
+    });
+
+    socketConnection.on("userOffline", (email) => {
+      setOnlineStatus((prevStatus) => ({ ...prevStatus, [email]: false }));
     });
 
     // Cleanup on component unmount
@@ -112,11 +117,18 @@ const UserList = ({ onUserClick, loggedInUserEmail }) => {
           className="user-card bg-white rounded-lg p-3 mb-2 flex items-center w-full cursor-pointer hover:bg-gray-100"
           onClick={() => handleClick(user)}
         >
-          <img
-            src={user.avatar || defaultImage}
-            alt={user.userName}
-            className="w-12 h-12 rounded-full mr-4"
-          />
+          <div className="relative">
+            <img
+              src={user.avatar || defaultImage}
+              alt={user.userName}
+              className="w-12 h-12 rounded-full mr-4"
+            />
+            <span
+              className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
+                onlineStatus[user.email] ? "bg-green-500" : "bg-red-500"
+              }`}
+            ></span>
+          </div>
           <div>
             <p className="text-xl font-semibold">{user.userName}</p>
             <p className="text-gray-500 text-sm">{user.email}</p>

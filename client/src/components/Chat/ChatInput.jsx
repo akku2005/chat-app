@@ -144,13 +144,17 @@
 // };
 
 // export default ChatInput;
-
 import React, { useState, useEffect, useRef } from "react";
-import EmojiPicker from "./emoji/EmojiPicker";
-import { icons } from "../Common/icons";
+import EmojiPicker from "./emoji/EmojiPicker"; // Ensure this path is correct
+import { icons } from "../Common/icons"; // Ensure this path is correct
 
-const ChatInput = ({ handleSendMessage, selectedUserEmail }) => {
-  const [message, setMessage] = useState("");
+const ChatInput = ({
+  handleSendMessage,
+  selectedUserEmail,
+  loggedInUserEmail,
+  message,
+  setMessage,
+}) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojiPickerRef = useRef(null);
 
@@ -181,7 +185,7 @@ const ChatInput = ({ handleSendMessage, selectedUserEmail }) => {
       const timestamp = new Date().toLocaleTimeString();
       const msgData = {
         to: selectedUserEmail,
-        from: "loggedInUserEmail", // Replace with actual logged-in user email
+        from: loggedInUserEmail,
         message,
         timestamp,
       };
@@ -199,7 +203,8 @@ const ChatInput = ({ handleSendMessage, selectedUserEmail }) => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && !event.shiftKey) {
+      // Prevent sending on Shift + Enter
       handleSend(event);
     }
   };

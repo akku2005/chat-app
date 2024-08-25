@@ -8,7 +8,6 @@ const sendMail = require("../services/email.service");
 
 const router = express.Router();
 
-// Login route
 router.post("/login", async (req, res) => {
   try {
     const { email, password, socketId } = req.body;
@@ -41,17 +40,17 @@ router.post("/login", async (req, res) => {
     // Generate refresh token
     const refreshToken = jwt.sign(
       { userId: user._id },
-      process.env.REFRESH_TOKEN_SECRET
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
     );
 
-    // Log the login
-    const loginRecord = new Login({ email: user.email });
-    await loginRecord.save();
-
-    // Send the tokens along with the response
-    res
-      .status(200)
-      .json({ message: "Login successful", accessToken, refreshToken });
+    // Send the tokens and user ID along with the response
+    res.status(200).json({
+      message: "Login successful",
+      accessToken,
+      refreshToken,
+      userId: user._id,
+    });
   } catch (error) {
     console.error("Error logging in:", error.message);
     res.status(500).json({ message: "Server Error" });
